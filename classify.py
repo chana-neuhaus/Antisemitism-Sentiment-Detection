@@ -10,27 +10,18 @@ import numpy as np
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 
-from text_normalizer_correct import TextNormalizer
-
-
-normalizer = None
-
-
-def get_normalizer():
-    global normalizer
-
-    if normalizer is None:
-        normalizer = TextNormalizer()
-
-    return normalizer
+import re
 
 def normalize_text(text: str) -> str:
-    """Apply the same text normalization used during model training."""
-    clean_text = get_normalizer().normalize_series(
-        pd.Series([text])
-    ).iloc[0]
+    text = str(text)
+    # lowercase
+    text = text.lower()
+    # remove special characters but keep letters, numbers, spaces
+    text = re.sub(r"[^a-z0-9\s]", " ", text)
+    # collapse whitespace
+    text = re.sub(r"\s+", " ", text)
 
-    return str(clean_text).strip()
+    return text.strip()
 
 
 def load_model(model_path: str | Path) -> Any:
