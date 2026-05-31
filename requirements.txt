@@ -5,3 +5,7 @@ scikit-learn==1.7.2
 joblib
 sentence-transformers
 beautifulsoup4
+nltk
+beautifulsoup4
+contractions
+spacy
