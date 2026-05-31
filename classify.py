@@ -13,12 +13,20 @@ from sentence_transformers import SentenceTransformer
 from text_normalizer_correct import TextNormalizer
 
 
-normalizer = TextNormalizer()
+normalizer = None
 
+
+def get_normalizer():
+    global normalizer
+
+    if normalizer is None:
+        normalizer = TextNormalizer()
+
+    return normalizer
 
 def normalize_text(text: str) -> str:
     """Apply the same text normalization used during model training."""
-    clean_text = normalizer.normalize_series(
+    clean_text = get_normalizer().normalize_series(
         pd.Series([text])
     ).iloc[0]
 
