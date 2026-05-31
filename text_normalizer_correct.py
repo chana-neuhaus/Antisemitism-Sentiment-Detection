@@ -136,7 +136,6 @@ import unicodedata
 import contractions
 import spacy
 import nltk
-nltk.download("stopwords", quiet=True)
 nltk.download("punkt", quiet=True)
 nltk.download("wordnet", quiet=True)
 nltk.download("omw-1.4", quiet=True)
@@ -150,7 +149,6 @@ nltk.download("punkt_tab", quiet=True)
 class TextNormalizer:
     def __init__(self):
         self.tokenizer = ToktokTokenizer()
-        self.stopword_list = nltk.corpus.stopwords.words("English")
         self.nlp = spacy.load("en_core_web_sm", disable=["parser", "ner"])
 	
 #strip_html_tags - strips html characters from document using beautiful soup and regex. #Returns stripped text
@@ -202,15 +200,6 @@ class TextNormalizer:
 
 #remove_stopwords - removes any stopwords listed in stopword_list 
 
-    def remove_stopwords(self, text, is_lower_case=False):
-        tokens = self.tokenizer.tokenize(text)
-        tokens = [token.strip() for token in tokens]
-        if is_lower_case:
-            filtered_tokens = [token for token in tokens if token not in self.stopword_list]
-        else:
-            filtered_tokens = [token for token in tokens if token.lower() not in self.stopword_list]
-        filtered_text = ' '.join(filtered_tokens)
-        return filtered_text
 
 #normalize_series - This is for normalizing a corpus in form of line series. takes self, #corpus, contraction_mapping, and all of the above function as parameters. (Above #functions are Boolean parameters.)Applies functions to corpus (unless False)
 
@@ -244,8 +233,6 @@ class TextNormalizer:
 
         normalized_corpus = normalized_corpus.apply(lambda x: re.sub(r'\s+', ' ', x).strip())
 
-        if stopword_removal:
-            normalized_corpus = normalized_corpus.apply(lambda x: self.remove_stopwords(x))
 
 #returns normalized corpus 
         
@@ -259,38 +246,5 @@ class TextNormalizer:
                          text_lower_case=True,
                          text_lemmatization=True,
                          special_char_removal=True,
-                         stopword_removal=True,
                          remove_digits=True):
 
-        normalized_corpus = []
-
-        for doc in corpus:
-            if html_stripping:
-                doc = self.strip_html_tags(doc)
-
-            if contraction_expansion:
-                doc = self.expand_contractions(doc, contraction_mapping)
-
-            if accented_char_removal:
-                doc = self.remove_accented_chars(doc)
-
-            if text_lower_case:
-                doc = doc.lower()
-
-            doc = re.sub(r'[\r\n]+', ' ', doc)
-
-            if text_lemmatization:
-                doc = self.lemmatize_text(doc)
-
-            if special_char_removal:
-                special_char_pattern = re.compile(r'([{.(-)!}])')
-                doc = special_char_pattern.sub(" \\1 ", doc)
-                doc = self.remove_special_characters(doc, remove_digits=remove_digits)
-
-            doc = re.sub(r'\s+', ' ', doc).strip()
-
-            if stopword_removal:
-                doc = self.remove_stopwords(doc, is_lower_case=text_lower_case)
-
-
-        return normalized_corpus
