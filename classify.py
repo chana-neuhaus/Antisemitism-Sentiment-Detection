@@ -17,7 +17,7 @@ def normalize_text(text: str) -> str:
     # lowercase
     cleean_text = text.lower()
     # remove special characters but keep letters, numbers, spaces
-    clean_text = re.sub(r"[^a-z0-9\s]", " ", text)
+    clean_text = re.sub(r'["(),@]', " ", text)
     # collapse whitespace
     clean_text = re.sub(r"\s+", " ", text)
 
