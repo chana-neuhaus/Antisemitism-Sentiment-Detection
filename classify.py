@@ -2,25 +2,27 @@
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
 from typing import Any
 
 import joblib
 import numpy as np
+import pandas as pd
 from sentence_transformers import SentenceTransformer
+
+from text_normalizer_correct import TextNormalizer
+
+
+normalizer = TextNormalizer()
 
 
 def normalize_text(text: str) -> str:
-    """Apply light text cleanup before embedding.
+    """Apply the same text normalization used during model training."""
+    clean_text = normalizer.normalize_series(
+        pd.Series([text])
+    ).iloc[0]
 
-    This is intentionally simple. If your notebook used a custom normalizer,
-    replace this function with that same preprocessing logic so the app matches
-    your training pipeline.
-    """
-    text = str(text)
-    text = re.sub(r"\s+", " ", text)
-    return text.strip()
+    return str(clean_text).strip()
 
 
 def load_model(model_path: str | Path) -> Any:
@@ -63,4 +65,4 @@ def classify_text(
         result["probabilities"] = probabilities
         result["confidence"] = float(probabilities[prediction])
 
-    return result
+    return result    
