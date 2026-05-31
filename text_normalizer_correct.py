@@ -136,6 +136,10 @@ import unicodedata
 import contractions
 import spacy
 import nltk
+ntlk.download("stopwords")
+nltk.download("punkt")
+nltk.download("wordnet")
+nltk.download("omw-1.4")
 
 #Creating class Text Normalizer which takes a corpus and preprocesses it for NLP
 #self.tokenizer - ToktokTokenizer as tokenizer
