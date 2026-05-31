@@ -106,10 +106,17 @@ def main():
                     class_label = LABELS.get(class_num, str(class_num))
                     st.write(f"{class_label}: **{probability * 100:.1f}%**")
 
+            with st.expander("Model Details"):
+                st.write("Normalized Text")
+                st.code(clean_text, language="text")
+
         except Exception as error:
             st.error("The app could not classify this text.")
             st.exception(error)
 
+
+if __name__ == "__main__":
+    main()
 
 if __name__ == "__main__":
     main()
