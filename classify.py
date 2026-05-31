@@ -13,15 +13,15 @@ from sentence_transformers import SentenceTransformer
 import re
 
 def normalize_text(text: str) -> str:
-    text = str(text)
+    clean_text = str(text)
     # lowercase
-    text = text.lower()
+    cleean_text = text.lower()
     # remove special characters but keep letters, numbers, spaces
-    text = re.sub(r"[^a-z0-9\s]", " ", text)
+    clean_text = re.sub(r"[^a-z0-9\s]", " ", text)
     # collapse whitespace
-    text = re.sub(r"\s+", " ", text)
+    clean_text = re.sub(r"\s+", " ", text)
 
-    return text.strip()
+    return clean_text.strip()
 
 
 def load_model(model_path: str | Path) -> Any:
