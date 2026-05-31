@@ -140,6 +140,7 @@ ntlk.download("stopwords")
 nltk.download("punkt")
 nltk.download("wordnet")
 nltk.download("omw-1.4")
+nltk.download("punkt_tab")
 
 #Creating class Text Normalizer which takes a corpus and preprocesses it for NLP
 #self.tokenizer - ToktokTokenizer as tokenizer
