@@ -60,6 +60,8 @@ def main():
         height=180,
         placeholder="Paste or type a social media post here...",
         label_visibility="collapsed",
+        key="main_text_input",
+
     )
 
     classify_button = st.button("Classify Text", type="primary")
